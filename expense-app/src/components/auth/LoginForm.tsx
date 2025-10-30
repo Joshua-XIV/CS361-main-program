@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../services/auth.service';
+import { useAuth } from '../../hooks/useAuth';
 
 interface LoginFormProps {
   onSwitchToSignup: () => void;
 }
 
 const LoginForm = ({ onSwitchToSignup }: LoginFormProps) => {
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '',password: '' });
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -21,10 +19,8 @@ const LoginForm = ({ onSwitchToSignup }: LoginFormProps) => {
     setLoading(true)
 
     try {
-      const user = await authService.login(formData.email, formData.password);
-      console.log('Logged in: ', user);
-
-      navigate('/dashboard');
+      await login(formData.email, formData.password)
+      navigate('/dashboard')
     } catch (err: any) {
       setError(err.message || 'Login Failed');
     } finally {
