@@ -1,9 +1,29 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+}
+
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
 .background-layout {
   min-height: 100vh;
   min-width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(164deg, 
     #d67c6c 0%,
     #8b4c7f 15%,
@@ -11,4 +31,47 @@
     #000000 95%,
     #000000 100%
   );
+}
+
+.background-layout-two {
+  background: #111217;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.welcome-message {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 2rem;
+  font-size: 80px;
+  background: linear-gradient(90deg, #ff9900, #7e2eff, #ff9900);
+  background-size: 200% 100%;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: fadeIn 3s ease-in-out forwards, fadeOut 3s ease-out forwards;
+  animation-delay: 0s, 3s;  
+
+  animation-name: fadeIn, fadeOut, moveGradient;
+  animation-duration: 3s, 3s, 5s;
+  animation-delay: 0s, 3s, 0s;
+  animation-timing-function: ease-in-out, ease-out, linear;
+  animation-fill-mode: forwards, forwards, infinite;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  animation: fadeIn 3s ease-in forwards;
+  animation-delay: 0s;
+  margin-top: 60px;
+}
+
+.page-card {
+  background-color: rgb(0, 0, 0, .5);
+  padding: 10px 10px;
 }
