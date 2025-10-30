@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import ShowPasswordIcon from "../../assets/passwordShow.svg?react";
+import HidePasswordIcon from "../../assets/passwordHide.svg?react";
 
 interface SignupFormProps {
   onSwitchToLogin: () => void;
@@ -12,15 +14,16 @@ const SignupForm = ({ onSwitchToLogin }: SignupFormProps) => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null)
     setLoading(true)
 
     try {
       const user = await signup(formData.name, formData.email, formData.password)
       console.log("User Signed Up:", user)
+      setError(null)
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Login Failed');
@@ -40,7 +43,7 @@ const SignupForm = ({ onSwitchToLogin }: SignupFormProps) => {
     <div className="background-layout p-4">
       <div className="auth-card">
         <h1 className="auth-title">
-          Expense Tracker
+          Welcome to Budgo
         </h1>
         
         <form onSubmit={handleSubmit} className="auth-form">
@@ -70,17 +73,37 @@ const SignupForm = ({ onSwitchToLogin }: SignupFormProps) => {
 
           <div className="form-group">
             <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder='Enter your Password here...'
-              required
-            />
+            <div className='relative w-full'>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder='Enter your Password here...'
+                required
+              />
+              <div
+                role='button'
+                onClick={() => setShowPassword((prev) => !prev)}
+                className='absolute right-3 top-1/2 -translate-y-1/2 border-0 cursor-pointer'
+                title={showPassword ? "Click to hide password." : "Click to show password"}
+              >
+                {showPassword ? <HidePasswordIcon {...({
+                      fill: "black",
+                      width: 30,
+                      height: 30,
+                    } as React.SVGProps<SVGSVGElement>)}/> : <ShowPasswordIcon {...({
+                      fill: "black",
+                      width: 30,
+                      height: 30,
+                    } as React.SVGProps<SVGSVGElement>)}/>}
+              </div>
+            </div>
           </div>
 
-          {error && <p className="text-red-500 flex justify-center w-full">{error}</p>}
+          <p className="text-red-500 flex justify-center w-full h-5">
+            {error || ''}
+          </p>
 
           <button type="submit" className="auth-button" disabled={loading}>
             {loading ? "Signing up..." : "Signup"}
