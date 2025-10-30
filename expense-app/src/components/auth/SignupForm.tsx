@@ -37,10 +37,10 @@ const SignupForm = ({ onSwitchToLogin }: SignupFormProps) => {
   };
 
   return (
-    <div className="auth-container p-4">
+    <div className="background-layout p-4">
       <div className="auth-card">
         <h1 className="auth-title">
-          Expense<br/>Tracker
+          Expense Tracker
         </h1>
         
         <form onSubmit={handleSubmit} className="auth-form">

@@ -1,0 +1,14 @@
+.background-layout {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(164deg, 
+    #d67c6c 0%,
+    #8b4c7f 15%,
+    #553669 30%,
+    #000000 95%,
+    #000000 100%
+  );
+}
