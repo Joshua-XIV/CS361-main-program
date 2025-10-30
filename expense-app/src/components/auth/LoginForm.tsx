@@ -39,7 +39,7 @@ const LoginForm = ({ onSwitchToSignup }: LoginFormProps) => {
   };
 
   return (
-    <div className="background-layout p-4">
+    <div className="background-layout justify-center items-center flex p-4">
       <div className="auth-card">
         <h1 className="auth-title">
           Welcome to Budgo

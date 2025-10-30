@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import "./App.css";
 import Layout from "./components/layout/Layout";
 import AuthPage from "./pages/AuthPage";
-import DashboardPage from "./pages/DashboardPage";
+import HomePage from "./pages/HomePage";
 import TransactionsPage from "./pages/TransactionsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import BudgetPage from "./pages/BudgetPage";
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout/>,
     children: [
-      {path: "dashboard", element: <DashboardPage/>},
+      {path: "home", element: <HomePage/>},
       {path: "transactions", element: <TransactionsPage/>},
       {path: "categories", element: <CategoriesPage/>},
       {path: "budget", element: <BudgetPage/>},
