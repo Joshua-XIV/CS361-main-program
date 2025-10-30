@@ -71,6 +71,8 @@ const LoginForm = ({ onSwitchToSignup }: LoginFormProps) => {
             />
           </div>
 
+          {error && <p className="text-red-500 flex justify-center w-full">{error}</p>}
+
           <button type="submit" className="auth-button" disabled={loading}>
             {loading ? 'Logging in...' : "Login"}
           </button>
