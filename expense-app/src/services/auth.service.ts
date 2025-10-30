@@ -4,7 +4,6 @@ interface User {
   id?: number
   email: string;
   name?: string;
-  username?: string;
 }
 
 export const authService = {
@@ -15,7 +14,7 @@ export const authService = {
       // const passwordHash = await bcrypt.hash(password, 10);
       
       // Call API
-      const data = await authApi.login(email, password);
+      const data = await authApi.login({email, passwordHash: password});
       
       // Store user data in localStorage
       const user: User = {
@@ -43,7 +42,7 @@ export const authService = {
       //const passwordHash = await bcrypt.hash(password, 10);
       
       // Call API (backend doesn't use name/username yet)
-      const data = await authApi.signup(email, password);
+      const data = await authApi.signup({email, passwordHash: password});
       
       // Store user data in localStorage
       const user: User = {

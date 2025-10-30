@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const API_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8080';
 
 interface LoginRequest {
   email: string;
@@ -19,13 +19,13 @@ interface UserResponse {
 
 export const authApi = {
   // POST to /users/testAuth
-  login: async (email: string, passwordHash: string): Promise<UserResponse> => {
+  login: async (data: LoginRequest): Promise<UserResponse> => {
     const response = await fetch(`${API_URL}/users/testAuth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, passwordHash }),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
@@ -40,13 +40,13 @@ export const authApi = {
   },
 
   // POST to /users/testAddUser
-  signup: async (email: string, passwordHash: string): Promise<UserResponse> => {
+  signup: async (data: SignupRequest): Promise<UserResponse> => {
     const response = await fetch(`${API_URL}/users/testAddUser`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, passwordHash }),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
