@@ -13,24 +13,26 @@ const Navbar = () => {
   return (
     <nav className='navbar'>
       <div className='nav-links'>
-        <NavLink to="/home" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/transactions" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          Transactions
-        </NavLink>
-        <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          Categories
-        </NavLink>
-        <NavLink to="/budget" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          Budget
-        </NavLink>
-        <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          Settings
-        </NavLink>
-      </div>
-      <div onClick={handleLogout} className='logout-button'>
-        Hello User
+        <div className="nav-links-left">
+          <NavLink to="/home" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/transactions" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Transactions
+          </NavLink>
+          <NavLink to="/categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Categories
+          </NavLink>
+          <NavLink to="/budget" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Budget
+          </NavLink>
+          <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            Settings
+          </NavLink>
+        </div>
+        <div onClick={handleLogout} className='profile nav-link'>
+          Hello User
+        </div>
       </div>
     </nav>
   );
