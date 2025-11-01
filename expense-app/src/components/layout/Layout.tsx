@@ -18,10 +18,8 @@ const Layout = () => {
       )}
       {!showWelcome && (
         <main className='page-content'>
-          <div className='p-5'>
-            <Navbar/>
-            <Outlet/>
-          </div>
+          <Navbar/>
+          <Outlet/>
         </main>
       )}
     </div>

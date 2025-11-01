@@ -7,28 +7,35 @@ const HomePage = () => {
   const [activeMonth, setActiveMonth] = useState<number | 'full'>(new Date().getMonth()+1)
   const [activeYear, setActiveYear] = useState<number>(new Date().getFullYear());
   const [summaryData, setSummaryData] = useState(null);
+  const [lastDays, setLastDays] = useState<number | null>(null);
 
   const handleFilterApply = (month: number | 'full', year: number) => {
     setActiveMonth(month);
     setActiveYear(year);
+    setLastDays(null);
 
     if (month === 'full') {
-
+      fetchYearlySummary(year)
     } else {
-
+      fetchMonthlySummary(month, year)
     }
   }
 
-  const fetchMonthlySummary = async (month: number, year: number) => {
+  const handleApplyLastDays = (days: number) => {
+    setLastDays(days);
+    fetchLastDaysSummary(days);
+  };
 
+  const fetchMonthlySummary = async (month: number, year: number) => {
+    console.log(`fetching ${month} month ${year} year`)
   }
 
   const fetchYearlySummary = async (year: number) => {
-    
+    console.log(`fetching ${year} year`)
   }
 
-  const handleCustomerRangeClick = () => {
-
+  const fetchLastDaysSummary = async (days: number) => {
+    console.log(`fetching last ${days} days`)
   }
 
   useEffect(() => {
@@ -39,8 +46,7 @@ const HomePage = () => {
     <>
       <DateFilter
         onApply={handleFilterApply}
-        showCustomRange={false}
-        onCustomRangeClick={handleCustomerRangeClick}
+        onApplyLastDays={handleApplyLastDays}
       />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
         <div className='page-card min-h-20'>

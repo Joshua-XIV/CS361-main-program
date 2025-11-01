@@ -1,3 +1,15 @@
+@media (max-width: 640px) {
+  .nav-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link {
+    font-size: 10px;
+  }
+}
+
 .navbar {
   position: fixed;
   display: flex;
@@ -21,6 +33,7 @@
   display: flex;
   flex: 0 0 80%;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -37,6 +50,8 @@
 .nav-link.active{
   color: rgb(203, 203, 220);
   opacity: 0.5;
+  text-decoration: none;
+  cursor:default
 }
 
 .profile {

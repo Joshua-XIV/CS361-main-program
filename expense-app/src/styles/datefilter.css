@@ -1,0 +1,46 @@
+@media (max-width: 640px) {
+  .display-date-text {
+    font-size: 16px;
+  }
+  .date-dropdown,
+  .date-apply-btn,
+  .date-switch-btn {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 540px) {
+  .display-date-text {
+    font-size: 14px; /* even smaller */
+  }
+  .date-dropdown,
+  .date-apply-btn,
+  .date-switch-btn {
+    font-size: 12px;
+  }
+}
+
+.display-date-text {
+  padding-right: 4px;
+  text-align: center;
+}
+
+.date-dropdown {
+  box-shadow: 0px 0px 3px 0px gray;
+  border-radius: 4px;
+}
+
+.date-apply-btn {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.date-switch-btn {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+}
