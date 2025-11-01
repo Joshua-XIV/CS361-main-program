@@ -23,7 +23,7 @@
 
 .background-layout {
   min-height: 100vh;
-  width: 100%;
+  width: 100vw;
   background: linear-gradient(164deg, 
     #d67c6c 0%,
     #8b4c7f 15%,

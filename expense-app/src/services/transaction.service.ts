@@ -79,6 +79,8 @@ export const transactionService = {
       filteredTransactions = transactions.filter(t => t.date >= cutoffDateString);
     }
 
+    // t.date >= start && t.date <= end
+
     const categoryMap = new Map(categories.map(c => [c.id, c.name]));
 
     const enrichedTransactions: TransactionWithCategory[] = filteredTransactions.map(t => ({
@@ -100,6 +102,27 @@ export const transactionService = {
       return { type: 'year', year}
     }
     return { type: 'month', year: year, month: month }
+  },
+
+  createLastDaysFilter: (days: number): DateFilter => {
+    return { type: 'lastDays', days: days };
+  },
+
+  getCurrentMonthFilter: (): DateFilter => {
+    const now = new Date();
+    return {
+      type: 'month',
+      year: now.getFullYear(),
+      month: now.getMonth() + 1
+    };
+  },
+
+  getCurrentYearFilter: (): DateFilter => {
+    const now = new Date();
+    return {
+      type: 'year',
+      year: now.getFullYear()
+    };
   },
 
   addTransaction: async (transaction: Omit<Transaction, 'id'| 'created_at' | 'updated_at'>): Promise<Transaction> => {
@@ -140,15 +163,7 @@ export const transactionService = {
     }, {} as Record<string, number>);
   },
 
-  getCurrentMonthFilter: (): DateFilter => {
-    const now = new Date();
-    return {
-      type: 'year',
-      year: now.getFullYear()
-    };
-  },
-
-  sortByDate: (transactions: Transaction[], order: 'asc' | 'desc' = 'desc'): Transaction[] => {
+  sortByDate: <T extends Transaction>(transactions: T[], order: 'asc' | 'desc' = 'desc'): T[] => {
     return [...transactions].sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
@@ -156,7 +171,7 @@ export const transactionService = {
     });
   },
 
-  sortByAmount: (transactions: Transaction[], order: 'asc' | 'desc' = 'desc'): Transaction[] => {
+  sortByAmount: <T extends Transaction>(transactions: T[], order: 'asc' | 'desc' = 'desc'): T[] => {
     return [...transactions].sort((a ,b) => {
       return order === 'desc' ? b.amount - a.amount : a.amount - b.amount;
     })

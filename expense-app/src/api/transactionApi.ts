@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_TRANSACTION_API_URL || 'http://localhost:5001/transactions';
 
 export interface Transaction {
-  id?: number;
+  id: number;
   user_id: number;
   category_id?: number;
   name: string;

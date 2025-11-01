@@ -1,0 +1,80 @@
+.confirm-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0, 0, 0, 0.5);
+  z-index: 20;
+  padding: 10px 10px;
+}
+
+.confirm-card {
+  position: relative;
+  background: #181b1f;
+  z-index: 30;
+  padding: 50px 30px;
+  border-radius: 1rem;
+}
+
+.confirm-card::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 2px; /* border thickness */
+  background: linear-gradient(
+    45deg,
+    #ff9900,
+    #7e2eff,
+    #ff9900,
+    #7e2eff
+  );
+  background-size: 400% 400%;
+  animation: gradientBorder 6s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes gradientBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.confirm-modal-cancel {
+  padding: 0.5rem 1rem;    
+  background-color: #3f7bd6;
+  color: #FFFFFF;  
+  border-radius: 0.25rem;  
+  border: none;
+  cursor: pointer;
+  opacity: 80%;
+}
+
+.confirm-modal-cancel:hover {
+  opacity: 100%; 
+}
+
+.confirm-modal-confirm {
+  padding: 0.5rem 1rem;       
+  background-color: #EF4444;  
+  color: #FFFFFF;        
+  border-radius: 0.25rem; 
+  border: none;
+  cursor: pointer;
+  opacity: 80%;
+}
+
+.confirm-modal-confirm:hover {
+  opacity: 100%;
+}
+
+.btn-close {
+  display: inline-block;
+  content: "\00d7"; /* This will render the 'X' */
+}
