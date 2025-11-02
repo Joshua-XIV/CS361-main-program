@@ -21,6 +21,7 @@ const TransactionsPage = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false)
   const [transactionModalOpen, setTransactionModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<TransactionWithCategory | null>(null)
 
   useEffect(() => {
     console.log("Use Effect");
@@ -167,6 +168,10 @@ const TransactionsPage = () => {
             onDelete={deleteData}
             selectedIds={selectedIds}
             setSelectedIds={setSelectedIds}
+            onEdit={(transaction) => {
+              setEditingTransaction(transaction);
+              setTransactionModalOpen(true);
+            }}
           />
         )}
       </div>
@@ -192,12 +197,22 @@ const TransactionsPage = () => {
       {user?.id && (
         <TransactionModal
           open={transactionModalOpen}
-          userId={user.id} // now TypeScript knows this is a number
-          onClose={() => setTransactionModalOpen(false)}
+          userId={user.id}
+          transaction={editingTransaction || undefined} // if null, it's "add"
+          onClose={() => {
+            setTransactionModalOpen(false);
+            setEditingTransaction(null); // clear after closing
+          }}
           onSaved={(newTransaction) => {
             const categoryName = categories.find(c => c.id === newTransaction.category_id)?.name || 'Other';
             const enriched: TransactionWithCategory = { ...newTransaction, categoryName };
-            setAllTransactions(prev => [enriched, ...prev]);
+            setAllTransactions(prev => {
+              const exists = prev.find(t => t.id === enriched.id);
+              if (exists) {
+                return prev.map(t => t.id === enriched.id ? enriched : t);
+              }
+              return [enriched, ...prev];
+            });
           }}
         />
       )}

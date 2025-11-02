@@ -8,12 +8,13 @@ interface TransactionsTableProps {
   onDelete: (id: number) => Promise<void>;
   selectedIds: number[];
   setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+  onEdit?: (transaction: TransactionWithCategory) => void;
 }
 
 type SortKey = 'date' | 'name' | 'categoryName' | 'amount';
 type SortDirection = 'asc' | 'desc';
 
-const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onDelete, selectedIds, setSelectedIds}) => {
+const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onDelete, selectedIds, setSelectedIds, onEdit }) => {
   const [deletingIds, setDeletingIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -148,7 +149,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                     ${transaction.amount.toFixed(2)}
                   </div>
                   <div className="flex gap-2 justify-center">
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm">Edit</button>
+                    <button className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" onClick={() => onEdit?.(transaction)}>Edit</button>
                     <button
                       className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm"
                       onClick={() => handleDeleteClick(transaction.id!)}
@@ -180,7 +181,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                     </span>
                   </div>
                   <div className="flex gap-2 mt-3">
-                    <button className="flex-1 px-3 py-1 bg-blue-500 text-white rounded-xl text-sm">Edit</button>
+                    <button className="flex-1 px-3 py-1 bg-blue-500 text-white rounded-xl text-sm" onClick={() => onEdit?.(transaction)}>Edit</button>
                     <button
                       className="flex-1 px-3 py-1 bg-red-500 text-white rounded-xl text-sm"
                       onClick={() => handleDeleteClick(transaction.id!)}

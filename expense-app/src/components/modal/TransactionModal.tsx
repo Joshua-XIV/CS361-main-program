@@ -29,6 +29,10 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   useEffect(() => {
     if (!open) return;
 
@@ -81,8 +85,15 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
   const isEdit = Boolean(transaction);
 
   return (
-    <div className="confirm-modal">
-      <div className="confirm-card">
+    <div className="confirm-modal" onClick={onClose}>
+      <div className="confirm-card" onClick={handleCardClick}>
+        <button
+          onClick={onClose}
+          className=" btn-close text-gray-400 hover:text-white text-4xl absolute top-2 right-6"
+          aria-label="Close"
+        >
+          {"\u00D7"}
+        </button> 
         <h2 className="text-xl font-semibold mb-4">{title || (isEdit ? 'Edit Transaction' : 'Add Transaction')}</h2>
         {error && <div className="text-red-500 mb-2">{error}</div>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -126,7 +137,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border hover:bg-gray-100"
+              className="px-4 py-2 rounded-lg border hover:bg-gray-800"
             >
               Cancel
             </button>
