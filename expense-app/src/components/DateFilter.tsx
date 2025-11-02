@@ -17,7 +17,9 @@ const DateFilter: React.FC<DateFilterProps>  = ({
   const currentYear = currentDate.getFullYear();
 
   const [selectedMonth, setSelectedMonth] = useState<number | 'full'>(currentMonth);
+  const [appliedMonth, setAppliedMonth] = useState<number | 'full'>(currentMonth)
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const [appliedYear, setAppliedYear] = useState<number>(currentYear);
   const [isLastDaysMode, setIsLastDaysMode] = useState(false);
   const [lastDays, setLastDays] = useState<number>(30);
 
@@ -47,10 +49,10 @@ const months = [
   if (isLastDaysMode) {
     displayText = `Last ${lastDays} days`;
   } else if (selectedMonth === 'full') {
-    displayText = `Year ${selectedYear}`;
+    displayText = `Year ${appliedYear}`;
   } else {
-    const monthName = months.find(m => m.value === selectedMonth)?.name;
-    displayText = `${monthName} ${selectedYear}`;
+    const monthName = months.find(m => m.value === appliedMonth)?.name;
+    displayText = `${monthName} ${appliedYear}`;
   }
 
   return (
@@ -104,7 +106,7 @@ const months = [
               </button>}
               <button
                 className="date-apply-btn"
-                onClick={() => onApply(selectedMonth, selectedYear)}
+                onClick={() => {onApply(selectedMonth, selectedYear); setAppliedMonth(selectedMonth); setAppliedYear(selectedYear);}}
               >
                 Apply
               </button>
