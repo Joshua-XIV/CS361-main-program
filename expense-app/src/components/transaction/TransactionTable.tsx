@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { TransactionWithCategory } from "../../services/transaction.service"
 import ConfirmModal from '../modal/ConfirmModal';
+import { transactionService } from '../../services/transaction.service';
 
 interface TransactionsTableProps {
   transactions: TransactionWithCategory[];
@@ -9,11 +10,48 @@ interface TransactionsTableProps {
   setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
+type SortKey = 'date' | 'name' | 'categoryName' | 'amount';
+type SortDirection = 'asc' | 'desc';
+
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onDelete, selectedIds, setSelectedIds}) => {
   const [deletingIds, setDeletingIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: SortKey; direction: SortDirection } | null>(null);
   const selectedTransaction = transactions.find(t => t.id === selectedId);
+
+  const sortedTransactions = useMemo(() => {
+    if (!sortConfig) return transactions;
+
+    const { key, direction } = sortConfig;
+    switch (key) {
+      case 'date':
+        return transactionService.sortByDate(transactions, direction);
+      case 'amount':
+        return transactionService.sortByAmount(transactions, direction);
+      case 'name':
+        return [...transactions].sort((a, b) => {
+          const res = a.name.localeCompare(b.name);
+          return direction === 'asc' ? res : -res;
+        });
+      case 'categoryName':
+        return [...transactions].sort((a, b) => {
+          const res = a.categoryName.localeCompare(b.categoryName);
+          return direction === 'asc' ? res : -res;
+        });
+      default:
+        return transactions;
+    }
+  }, [transactions, sortConfig]);
+
+  const requestSort = (key: SortKey) => {
+    setSortConfig(prev => {
+      if (prev?.key === key) {
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
+  };
 
   const handleConfirmDelete = async (id?: number) => {
     if (selectedId === null) return;
@@ -47,6 +85,13 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
     );
   };
 
+  const getArrow = (key: SortKey) => {
+    if (!sortConfig) return '';
+    return sortConfig.key === key
+      ? sortConfig.direction === 'asc' ? '▲' : '▼'
+      : '';
+  };
+
   if (transactions.length === 0) {
     return <div className="no-results text-center py-12 text-gray-500">No transactions found</div>;
   }
@@ -68,15 +113,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
               }
             />
           </div>
-          <div>Date</div>
-          <div>Name</div>
-          <div>Category</div>
-          <div className="text-right">Amount</div>
+          <div className="cursor-pointer underline" onClick={() => requestSort('date')}>Date {getArrow('date')}</div>
+          <div className="cursor-pointer underline" onClick={() => requestSort('name')}>Name {getArrow('name')}</div>
+          <div className="cursor-pointer underline" onClick={() => requestSort('categoryName')}>Category {getArrow('categoryName')}</div>
+          <div className="text-right cursor-pointer underline" onClick={() => requestSort('amount')}>Amount {getArrow('amount')}</div>
           <div className="text-center">Actions</div>
         </div>
         {/* Table Body */}
         <div className="table-body max-h-[500px] overflow-y-auto">
-          {transactions.map(transaction => {
+          {sortedTransactions.map(transaction => {
             const isDeleting = deletingIds.includes(transaction.id!);
             return (
               <React.Fragment key={transaction.id}>
@@ -91,7 +136,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                     />
                   </div>
                   <div className="text-sm font-medium">
-                    {new Date(transaction.date).toLocaleDateString()}
+                    {new Date(transaction.date).toLocaleDateString()} {new Date(transaction.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                   <div className="font-semibold">{transaction.name}</div>
                   <div>
@@ -131,7 +176,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                       {transaction.categoryName}
                     </span>
                     <span className="text-sm font-medium">
-                      {new Date(transaction.date).toLocaleDateString()}
+                      {new Date(transaction.date).toLocaleDateString()} {new Date(transaction.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                   <div className="flex gap-2 mt-3">
@@ -155,7 +200,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
         messageList={
           selectedTransaction
             ? [
-                `Date: ${new Date(selectedTransaction.date).toLocaleDateString()}`,
+                `Date: ${new Date(selectedTransaction.date).toLocaleDateString()} ${new Date(selectedTransaction.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                 `Name: ${selectedTransaction.name}`,
                 `Category: ${selectedTransaction.categoryName}`,
                 `Amount: $${selectedTransaction.amount.toFixed(2)}`

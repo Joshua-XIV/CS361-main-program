@@ -28,6 +28,18 @@
 .date-dropdown {
   box-shadow: 0px 0px 3px 0px gray;
   border-radius: 4px;
+  border: none;
+  outline: none;
+}
+
+.date-dropdown:focus {
+  box-shadow: 0px 0px 3px 2px gray;
+  border-radius: 4px;
+  border: none;
+}
+
+.date-dropdown:active {
+  border: red;
 }
 
 .date-apply-btn {

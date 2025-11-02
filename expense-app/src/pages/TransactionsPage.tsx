@@ -6,6 +6,7 @@ import type { Category } from '../api/categoryApi';
 import DateFilter from '../components/DateFilter';
 import TransactionsTable from '../components/transaction/TransactionTable';
 import ConfirmModal from '../components/modal/ConfirmModal';
+import TransactionModal from '../components/modal/TransactionModal';
 
 const TransactionsPage = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const TransactionsPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false)
+  const [transactionModalOpen, setTransactionModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("Use Effect");
@@ -105,21 +107,28 @@ const TransactionsPage = () => {
         onApplyLastDays={handleApplyLastDays}
       />
 
-      <div className="search-section w-full page-card">
+      <div className="search-section w-full page-card flex items-center gap-4">
         <input
           type="text"
           placeholder="Search Transactions..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className='w-full px-3 py-2 border-gray-500 border-2 rounded-xl'
+          className='flex-1 px-3 py-2 border-gray-500 border-2 rounded-xl'
         />
+        <button
+          onClick={() => setTransactionModalOpen(true)}
+          className=" text-white rounded-xl px-3 py-2 border-2 box-border hover:text-green-400 hover:border-green-400"
+        >
+          Add Transaction
+        </button>
       </div>
 
-      <div className="filter-section page-card">
+      <div className="page-card">
         <label>Category:</label>
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
+          className='date-dropdown'
         >
           <option value="all" className='text-black'>All Categories</option>
           {categories.map(cat => (
@@ -162,6 +171,10 @@ const TransactionsPage = () => {
         )}
       </div>
 
+      <p className='text-2xl text-center mt-10' style={{color:"#b0b0b0"}}>
+        Manage, filter, and track your transactions all in one place.
+      </p>
+
       <ConfirmModal
         open={modalOpen}
         message={`Are you sure you want to delete the selected ${selectedIds.length} transactions`}
@@ -176,6 +189,18 @@ const TransactionsPage = () => {
         onCancel={() => setModalOpen(false)}
         afterMessage='This data will be deleted FOREVER!'
       />
+      {user?.id && (
+        <TransactionModal
+          open={transactionModalOpen}
+          userId={user.id} // now TypeScript knows this is a number
+          onClose={() => setTransactionModalOpen(false)}
+          onSaved={(newTransaction) => {
+            const categoryName = categories.find(c => c.id === newTransaction.category_id)?.name || 'Other';
+            const enriched: TransactionWithCategory = { ...newTransaction, categoryName };
+            setAllTransactions(prev => [enriched, ...prev]);
+          }}
+        />
+      )}
     </>
   )
 }
