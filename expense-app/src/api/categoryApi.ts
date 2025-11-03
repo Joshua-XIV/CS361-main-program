@@ -54,7 +54,7 @@ export const categoryApi = {
   },
 
   // PATCH /categories/{id}
-  update: async (categoryId: number, updates: { name: string }): Promise<Category> => {
+  update: async (categoryId: number, updates: Partial<Category>): Promise<Category> => {
     const response = await fetch(`${API_URL}/categories/${categoryId}`, {
       method: 'PATCH',
       headers: {
