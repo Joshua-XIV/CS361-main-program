@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import type { Category } from "../../api/categoryApi";
 import ConfirmModal from "../modal/ConfirmModal";
-import { categoryService } from "../../services/category.service";
+import CategoryModal from "../modal/CategoryModal";
+import { useAuth } from "../../hooks/useAuth";
 
 interface CategoryTableProps {
   categories: Category[];
@@ -13,7 +14,10 @@ type SortKey = 'name';
 type SortDirection = 'asc' | 'desc';
 
 const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onEdit}) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const { user } = useAuth();
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [sortConfig, setSortConfig] = useState<{key: SortKey; direction: SortDirection} | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -37,7 +41,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
   const handleConfirmDelete = async (id?: number) => {
     if (selectedId === null) return;
     
-    setModalOpen(false);
+    setDeleteModalOpen(false);
     setDeleteLoading(true)
     try {
       await onDelete(selectedId);
@@ -52,21 +56,22 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
   const handleDeleteClick = (id: number) => {
     if (!id) return;
     setSelectedId(id);
-    setModalOpen(true);
+    setDeleteModalOpen(true);
   };
 
   const handleDeleteCancel = () => {
-    setModalOpen(false);
+    setDeleteModalOpen(false);
     setSelectedId(null);
   }
 
   const handleEditClick = (category: Category) => {
-    setModalOpen(true);
-    setSelectedId(null);
+    if (!category.id) return
+    setSelectedId(category.id); 
+    setEditModalOpen(true);
   }
 
   const handleEditCancel = () => {
-    setModalOpen(false);
+    setEditModalOpen(false);
     setSelectedId(null);
   }
 
@@ -86,6 +91,8 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
       ? sortConfig.direction === 'asc' ? '▲' : '▼'
       : '';
   };
+
+  if (!user?.id) return
 
   if (categories.length === 0) {
      return <div className="no-results text-center py-12 text-gray-500">No categories found</div>;
@@ -109,7 +116,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
                   <div className="flex gap-2 justify-center">
                     <button 
                       className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" 
-                      onClick={() => onEdit?.(category)}>Edit
+                      onClick={() => handleEditClick(category)}>Edit
                     </button>
                     <button
                       className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm"
@@ -125,11 +132,21 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
         </div>
       </div>
       <ConfirmModal
-        open={modalOpen}
+        open={deleteModalOpen}
         onCancel={handleDeleteCancel}
         onConfirm={handleConfirmDelete}
         message={`Are you sure you want to delete the ${categories.find(c => c.id === selectedId)?.name.toUpperCase()} category?`}
         afterMessage={`Deleting ${categories.find(c => c.id === selectedId)?.name.toUpperCase()} will set all transaction associated with the ${categories.find(c => c.id === selectedId)?.name.toUpperCase()} category to be set to "Other"`}
+      />
+      <CategoryModal
+        userId={user?.id}
+        open={editModalOpen}
+        category={selectedCategory}
+        onClose={handleEditCancel}
+        onSaved={(updateCategory) => {
+          onEdit && onEdit(updateCategory);
+          setEditModalOpen(false);
+        }}
       />
     </>
   )
