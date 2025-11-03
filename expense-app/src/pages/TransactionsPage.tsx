@@ -69,8 +69,12 @@ const TransactionsPage = () => {
     let filtered = [...allTransactions];
 
     if (categoryFilter !== 'all') {
-      const categoryId = parseInt(categoryFilter);
-      filtered = filtered.filter(t => t.category_id === categoryId);
+      if (categoryFilter === 'Other') {
+        filtered = filtered.filter(t => !t.category_id)
+      } else {
+        const categoryId = parseInt(categoryFilter);
+        filtered = filtered.filter(t => t.category_id === categoryId);
+      }
     }
 
     if (searchTerm) {
@@ -135,6 +139,7 @@ const TransactionsPage = () => {
               {cat.name}
             </option>
           ))}
+          <option value="Other" className='text-black'>Other</option>
         </select>
       </div>
 
