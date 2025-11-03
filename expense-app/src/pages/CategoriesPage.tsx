@@ -61,17 +61,6 @@ const CategoriesPage = () => {
     }
   }
 
-  const addData = async (category: Category) => {
-    if (!user?.id) return;
-
-    try {
-      const savedCategory = await categoryService.addCategory(user.id, category.name);
-      setCategories(prev => [...prev, savedCategory]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   if (!user?.id) return
 
   return (
@@ -107,7 +96,9 @@ const CategoriesPage = () => {
         open={addModalOpen}
         userId={user?.id}
         onClose={() => setAddModalOpen(false)}
-        onSaved={addData}
+        onSaved={(savedCategory) => {
+          setCategories(prev => [...prev, savedCategory]);
+        }}
       />
     </>
   )
