@@ -1,11 +1,13 @@
 @media (max-width: 640px) {
-  .nav-link {
+  .nav-link,
+  .logout-link {
     font-size: 12px;
   }
 }
 
 @media (max-width: 480px) {
-  .nav-link {
+  .nav-link,
+  .logout-link {
     font-size: 10px;
   }
 }
@@ -35,6 +37,17 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+.logout-link {
+  color: #f30843;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+  color: #f30843
+}
+
 
 .nav-link {
   color: #ccccdc;

@@ -3,6 +3,8 @@ import type { Category } from "../../api/categoryApi";
 import ConfirmModal from "../modal/ConfirmModal";
 import CategoryModal from "../modal/CategoryModal";
 import { useAuth } from "../../hooks/useAuth";
+import TrashCanIcon from "../../assets/trashCan.svg?react"
+import EditIcon from "../../assets/editButton.svg?react"
 
 interface CategoryTableProps {
   categories: Category[];
@@ -115,14 +117,36 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
                   <div className="font-semibold">{category.name}</div>
                   <div className="flex gap-2 justify-center">
                     <button 
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" 
-                      onClick={() => handleEditClick(category)}>Edit
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm flex gap-2" 
+                      onClick={() => handleEditClick(category)}>Edit <EditIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
                     </button>
                     <button
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm"
+                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm flex"
                       onClick={() => handleDeleteClick(category.id!)}
                       disabled={deleteLoading}>
-                      {deleteLoading ? 'Deleting...' : 'Delete'}
+                      {deleteLoading ? 'Deleting...' : 'Delete'} 
+                        <span style={{ display: 'inline-block', transform: 'scale(2.4)' }}>
+                          <TrashCanIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+                        </span>
+                    </button>                    
+                  </div>
+                </div>
+                {/* Mobile */}
+                <div className="md:hidden gap-4 p-4 font-bold  border-b-2 border-gray-400">
+                  <div className="font-semibold">{category.name}</div>
+                  <div className="flex gap-2 justify-center">
+                    <button 
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm flex gap-2" 
+                      onClick={() => handleEditClick(category)}>Edit <EditIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+                    </button>
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm flex"
+                      onClick={() => handleDeleteClick(category.id!)}
+                      disabled={deleteLoading}>
+                      {deleteLoading ? 'Deleting...' : 'Delete'} 
+                        <span style={{ display: 'inline-block', transform: 'scale(2.4)' }}>
+                          <TrashCanIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+                        </span>
                     </button>                    
                   </div>
                 </div>

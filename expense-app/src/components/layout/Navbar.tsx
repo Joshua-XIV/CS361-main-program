@@ -30,8 +30,10 @@ const Navbar = () => {
             Settings
           </NavLink>
         </div>
-        <div onClick={handleLogout} className='profile nav-link'>
-          Hello User
+        <div className="profile flex justify-end">
+          <NavLink to="/" className='logout-link' onClick={handleLogout}>
+            Logout
+          </NavLink>
         </div>
       </div>
     </nav>

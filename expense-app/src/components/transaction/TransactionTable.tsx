@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import type { TransactionWithCategory } from "../../services/transaction.service"
 import ConfirmModal from '../modal/ConfirmModal';
 import { transactionService } from '../../services/transaction.service';
+import TrashCanIcon from "../../assets/trashCan.svg?react"
+import EditIcon from "../../assets/editButton.svg?react"
 
 interface TransactionsTableProps {
   transactions: TransactionWithCategory[];
@@ -150,13 +152,16 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                   </div>
                   <div className="flex gap-2 justify-center">
                     <button 
-                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" 
-                      onClick={() => onEdit?.(transaction)}>Edit</button>
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm flex gap-2" 
+                      onClick={() => onEdit?.(transaction)}>Edit <EditIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} /></button>
                     <button
-                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm"
+                      className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm flex gap-2"
                       onClick={() => handleDeleteClick(transaction.id!)}
                       disabled={isDeleting}>
                       {isDeleting ? 'Deleting...' : 'Delete'}
+                        <span style={{ display: 'inline-block', transform: 'scale(2.4)' }}>
+                          <TrashCanIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+                        </span>
                     </button>
                   </div>
                 </div>
@@ -183,12 +188,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                     </span>
                   </div>
                   <div className="flex gap-2 mt-3">
-                    <button className="flex-1 px-3 py-1 bg-blue-500 text-white rounded-xl text-sm" onClick={() => onEdit?.(transaction)}>Edit</button>
+                    <button className="flex flex-1 px-3 py-1 bg-blue-500 text-white rounded-xl text-sm gap-2 justify-center" onClick={() => onEdit?.(transaction)}>Edit <EditIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} /></button>
                     <button
-                      className="flex-1 px-3 py-1 bg-red-500 text-white rounded-xl text-sm"
+                      className="flex flex-1 px-3 py-1 bg-red-500 text-white rounded-xl text-sm gap-2 justify-center"
                       onClick={() => handleDeleteClick(transaction.id!)}
                       disabled={isDeleting}>
                       {isDeleting ? '...' : 'Delete'}
+                        <span style={{ display: 'inline-block', transform: 'scale(2.4)' }}>
+                          <TrashCanIcon {...({ fill: 'white', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+                        </span>
                     </button>
                   </div>
                 </div>

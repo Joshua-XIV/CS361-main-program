@@ -7,6 +7,7 @@ import DateFilter from '../components/DateFilter';
 import TransactionsTable from '../components/transaction/TransactionTable';
 import ConfirmModal from '../components/modal/ConfirmModal';
 import TransactionModal from '../components/modal/TransactionModal';
+import TrashCanIcon from "../assets/trashCan.svg?react"
 
 const TransactionsPage = () => {
   const { user } = useAuth();
@@ -154,9 +155,12 @@ const TransactionsPage = () => {
         {selectedIds.length > 0 && (
           <button
             onClick={() => setModalOpen(true)}
-            className=" text-white rounded-xl px-2 py-2 border-2 box-border hover:text-red-400 hover:border-red-400"
+            className=" text-white rounded-xl px-2 py-2 border-2 box-border hover:text-red-400 hover:border-red-400 flex items-center"
           >
             Delete Selected ({selectedIds.length})
+            <span style={{ display: 'inline-block', transform: 'scale(2.4)' }}>
+              <TrashCanIcon {...({ fill: 'red', width: 20, height: 20 } as React.SVGProps<SVGSVGElement>)} />
+            </span>
           </button>
         )}
       </div>
@@ -164,8 +168,17 @@ const TransactionsPage = () => {
       {/* Table Layout with Columns */}
       <div className="transactions-container page-card overflow-hidden">
         {displayedTransactions.length === 0 ? (
-          <div className="no-results text-center py-12 text-gray-500">No transactions found</div>
-        ) : (
+            categoryFilter === 'all' && searchTerm === '' ? (
+              <div className="no-results text-center py-12 text-gray-500">
+                You haven’t added any transactions yet. <br/>
+                Click the <strong className='text-white'>Add Transaction</strong> button above to log your first expense.
+              </div>
+            ) : (
+              <div className="no-results text-center py-12 text-gray-500">
+                No transactions match your filters
+              </div>
+            )
+          ) : (
           <TransactionsTable
             transactions={displayedTransactions}
             onDelete={deleteData}

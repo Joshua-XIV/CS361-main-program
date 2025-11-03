@@ -69,7 +69,7 @@ const CategoriesPage = () => {
       <div className="search-section w-full page-card flex items-center gap-4">
         <input
           type="text"
-          placeholder="Search Transactions..."
+          placeholder="Search Categories..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className='flex-1 px-3 py-2 border-gray-500 border-2 rounded-xl'
@@ -82,15 +82,24 @@ const CategoriesPage = () => {
         </button>
       </div>
       <div className='categories-container page-card overflow-hidden'>
-        {filteredCategories.length === 0 ? (
-          <div className="no-results text-center py-12 text-gray-500">No categories found</div>
+      {filteredCategories.length === 0 ? (
+        searchTerm === '' ? (
+          <div className="no-results text-center py-12 text-gray-500">
+            You haven’t added any categories yet. <br/>
+            Click the <strong>Add Category</strong> button above to create your first category.
+          </div>
         ) : (
-          <CategoryTable
-            categories={filteredCategories}
-            onDelete={deleteData}
-            onEdit={editData}
-          />
-        )}
+          <div className="no-results text-center py-12 text-gray-500">
+            No categories match your search
+          </div>
+        )
+      ) : (
+        <CategoryTable
+          categories={filteredCategories}
+          onDelete={deleteData}
+          onEdit={editData}
+        />
+      )}
       </div>
       <CategoryModal
         open={addModalOpen}
