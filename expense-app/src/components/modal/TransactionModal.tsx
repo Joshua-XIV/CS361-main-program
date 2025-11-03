@@ -54,7 +54,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
 
     try {
       let saved: Transaction;
-      if (transaction) {
+      if (transaction && transaction.id) {
         saved = await transactionService.updateTransaction(transaction.id, {
           name,
           amount,

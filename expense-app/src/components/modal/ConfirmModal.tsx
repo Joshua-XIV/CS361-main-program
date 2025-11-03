@@ -18,7 +18,7 @@ const ConfirmModal = ({open, message, messageList = [], onConfirm, onCancel, aft
 
   return (
     <div className='confirm-modal' onClick={onCancel}>
-      <div className='confirm-card' onClick={handleCardClick}>
+      <div className='confirm-card max-w-xl w-full' onClick={handleCardClick}>
         <button
           onClick={onCancel}
           className=" btn-close text-gray-400 hover:text-white text-4xl absolute top-2 right-6"
@@ -26,7 +26,7 @@ const ConfirmModal = ({open, message, messageList = [], onConfirm, onCancel, aft
         >
           {"\u00D7"}
         </button>        
-        <p className='pb-2 font-bold'>{message}</p>
+        <p className='pb-3 font-bold text-center'>{message}</p>
         {messageList.length > 0 && (
           <div className="pb-6 text-left max-h-72 overflow-auto">
             {messageList.map((line, idx) => (
@@ -34,7 +34,7 @@ const ConfirmModal = ({open, message, messageList = [], onConfirm, onCancel, aft
             ))}
           </div>
         )}
-        <div className='flex justify-between gap-4'>
+        <div className='flex justify-between px-12'>
           <button className='confirm-modal-cancel' onClick={onCancel}>
             Cancel
           </button>
@@ -42,7 +42,7 @@ const ConfirmModal = ({open, message, messageList = [], onConfirm, onCancel, aft
             Confirm
           </button>
         </div>
-        {afterMessage && <p className='pt-4 font-bold text-center text-yellow-400'>{afterMessage}</p>}
+        {afterMessage && <p className='pt-4 font-bold text-center text-yellow-400 wrap-break-word whitespace-normal'>{afterMessage}</p>}
       </div>
     </div>
   )

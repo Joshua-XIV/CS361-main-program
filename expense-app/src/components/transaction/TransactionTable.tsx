@@ -149,7 +149,9 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
                     ${transaction.amount.toFixed(2)}
                   </div>
                   <div className="flex gap-2 justify-center">
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" onClick={() => onEdit?.(transaction)}>Edit</button>
+                    <button 
+                      className="px-3 py-1 bg-blue-500 text-white rounded-xl hover:bg-blue-600 text-sm" 
+                      onClick={() => onEdit?.(transaction)}>Edit</button>
                     <button
                       className="px-3 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 text-sm"
                       onClick={() => handleDeleteClick(transaction.id!)}

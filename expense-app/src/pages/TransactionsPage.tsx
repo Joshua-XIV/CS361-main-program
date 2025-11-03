@@ -24,9 +24,7 @@ const TransactionsPage = () => {
   const [editingTransaction, setEditingTransaction] = useState<TransactionWithCategory | null>(null)
 
   useEffect(() => {
-    console.log("Use Effect");
     if (user?.id) {
-      console.log("Current user id:", user.id);
       fetchData();
     }
   }, [user, dateFilter]);
