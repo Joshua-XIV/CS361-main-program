@@ -147,6 +147,11 @@ export const transactionService = {
     await transactionApi.delete(transactionId);
   },
 
+  deleteTransactions: async (ids: number[]): Promise<void> => {
+    if (!ids.length) return;
+    await transactionApi.deleteBulk(ids);
+  },
+
   getById: async(transactionId: number): Promise<Transaction> => {
     return await transactionApi.getById(transactionId);
   },

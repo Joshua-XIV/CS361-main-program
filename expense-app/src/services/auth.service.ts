@@ -20,6 +20,7 @@ export const authService = {
       const user: User = {
         id: data.id,
         email: data.email,
+        //name: data.name
       };
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('isAuthenticated', 'true');
