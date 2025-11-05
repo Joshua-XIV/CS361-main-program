@@ -123,7 +123,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, onD
           <div className="text-center">Actions</div>
         </div>
         {/* Table Body */}
-        <div className="table-body max-h-[500px] overflow-y-auto">
+        <div className="table-body max-h-[60vh] overflow-y-auto">
           {sortedTransactions.map(transaction => {
             const isDeleting = deletingIds.includes(transaction.id!);
             return (

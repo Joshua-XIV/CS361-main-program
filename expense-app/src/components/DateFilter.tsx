@@ -16,8 +16,8 @@ const DateFilter: React.FC<DateFilterProps>  = ({
   const currentMonth = currentDate.getMonth() + 1;
   const currentYear = currentDate.getFullYear();
 
-  const [selectedMonth, setSelectedMonth] = useState<number | 'full'>(currentMonth);
-  const [appliedMonth, setAppliedMonth] = useState<number | 'full'>(currentMonth)
+  const [selectedMonth, setSelectedMonth] = useState<number | 'full'>('full');
+  const [appliedMonth, setAppliedMonth] = useState<number | 'full'>('full')
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [appliedYear, setAppliedYear] = useState<number>(currentYear);
   const [isLastDaysMode, setIsLastDaysMode] = useState(false);

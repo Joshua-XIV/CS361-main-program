@@ -108,7 +108,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete, onE
           <div className="text-center">Actions</div>
         </div>
         {/* Table Body*/}
-        <div className="table-body max-h-[500px] overflow-y-auto">
+        <div className="table-body max-h-[60vh] overflow-y-auto">
           {sortedCategories.map(category => {
             return (
               <React.Fragment key={category.id}>

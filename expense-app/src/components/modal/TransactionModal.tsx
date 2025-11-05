@@ -101,6 +101,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
             type="text"
             placeholder="Transaction Name"
             value={name}
+            id="transaction-name"
             onChange={(e) => setName(e.target.value)}
             className="px-3 py-2 border rounded-lg"
             required
@@ -108,6 +109,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
           <input
             type="number"
             placeholder="Amount"
+            id="transaction-amount"
             value={amount}
             onChange={(e) => setAmount(parseFloat(e.target.value))}
             className="px-3 py-2 border rounded-lg"
@@ -117,6 +119,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
           />
           <input
             type="datetime-local"
+            id="transaction-date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="px-3 py-2 border rounded-lg"
@@ -125,6 +128,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({
           />
           <select
             value={categoryId ?? ''}
+            id="transaction-category"
             onChange={(e) => setCategoryId(e.target.value ? parseInt(e.target.value) : undefined)}
             className="px-3 py-2 border rounded-lg"
           >

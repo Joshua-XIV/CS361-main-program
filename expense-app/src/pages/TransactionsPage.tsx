@@ -15,7 +15,7 @@ const TransactionsPage = () => {
   const [allTransactions, setAllTransactions] = useState<TransactionWithCategory[]>([]);
   const [displayedTransactions, setDisplayedTransactions] = useState<TransactionWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [dateFilter, setDateFilter] = useState<DateFilterType>(transactionService.getCurrentMonthFilter());
+  const [dateFilter, setDateFilter] = useState<DateFilterType>(transactionService.getCurrentYearFilter());
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
@@ -31,12 +31,19 @@ const TransactionsPage = () => {
   }, [user, dateFilter]);
 
   const deleteSelected = async () => {
-    for (const id of selectedIds) {
-      await deleteData(id);
+    if (!user?.id || selectedIds.length === 0) return;
+
+    try {
+      await transactionService.deleteTransactions(selectedIds);
+      
+      setAllTransactions(prev => prev.filter(t => !selectedIds.includes(t.id!)));
+      setSelectedIds([]);
+    } catch (error) {
+      console.error('Error deleting transactions: ', error);
+    } finally {
+      setModalOpen(false);
     }
-    setSelectedIds([]);
-    setModalOpen(false)
-  };  
+  };
 
   const fetchData = async () => {
     if (!user?.id) return;
@@ -50,7 +57,7 @@ const TransactionsPage = () => {
     } catch (error) {
       console.error('Error fetching data: ', error);
     } finally {
-      setLoading(false);
+
     }
   };
 
@@ -86,6 +93,7 @@ const TransactionsPage = () => {
 
     setDisplayedTransactions(filtered);
     setSelectedIds([]);
+    setTimeout(() => setLoading(false), 500); 
   };
 
   useEffect(() => {
@@ -115,6 +123,7 @@ const TransactionsPage = () => {
         <input
           type="text"
           placeholder="Search Transactions..."
+          id="search-filter"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className='flex-1 px-3 py-2 border-gray-500 border-2 rounded-xl'
@@ -128,20 +137,22 @@ const TransactionsPage = () => {
       </div>
 
       <div className="page-card">
-        <label>Category:</label>
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className='date-dropdown'
-        >
-          <option value="all" className='text-black'>All Categories</option>
-          {categories.map(cat => (
-            <option key={cat.id} value={cat.id} className='text-black'>
-              {cat.name}
-            </option>
-          ))}
-          <option value="Other" className='text-black'>Other</option>
-        </select>
+        <label>Category:
+          <select
+            id="category-filter"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className='date-dropdown'
+          >
+            <option value="all" className='text-black'>All Categories</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id} className='text-black'>
+                {cat.name}
+              </option>
+            ))}
+            <option value="Other" className='text-black'>Other</option>
+          </select>
+        </label>
       </div>
 
       <div className="results-info flex page-card mt-5 h-15 justify-between items-center">
@@ -167,18 +178,22 @@ const TransactionsPage = () => {
 
       {/* Table Layout with Columns */}
       <div className="transactions-container page-card overflow-hidden">
-        {displayedTransactions.length === 0 ? (
-            categoryFilter === 'all' && searchTerm === '' ? (
-              <div className="no-results text-center py-12 text-gray-500">
-                You haven’t added any transactions yet. <br/>
-                Click the <strong className='text-white'>Add Transaction</strong> button above to log your first expense.
-              </div>
-            ) : (
-              <div className="no-results text-center py-12 text-gray-500">
-                No transactions match your filters
-              </div>
-            )
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="gradient-spinner"></div>
+          </div>
+        ) : displayedTransactions.length === 0 ? (
+          categoryFilter === 'all' && searchTerm === '' ? (
+            <div className="no-results text-center py-12 text-gray-500">
+              You haven’t added any transactions yet. <br/>
+              Click the <strong className='text-white'>Add Transaction</strong> button above to log your first expense.
+            </div>
           ) : (
+            <div className="no-results text-center py-12 text-gray-500">
+              No transactions match your filters
+            </div>
+          )
+        ) : (
           <TransactionsTable
             transactions={displayedTransactions}
             onDelete={deleteData}

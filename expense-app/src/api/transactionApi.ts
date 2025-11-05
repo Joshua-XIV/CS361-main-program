@@ -98,6 +98,23 @@ export const transactionApi = {
     }
   },
 
+  deleteBulk: async(transactionIds: number[]): Promise<void> => {
+    if (!transactionIds.length) return;
+
+    const response = await fetch(`${API_URL}/bulk`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids: transactionIds }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => null);
+      throw new Error(error?.error || "Failed to delete transactions");
+    }
+  },
+
   // -------------------------------
   // /transactions/monthly
   // -------------------------------

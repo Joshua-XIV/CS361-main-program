@@ -33,7 +33,7 @@ const CategoriesPage = () => {
     } catch (error) {
       console.log(error)
     } finally {
-      setLoadingCategories(false);
+      setTimeout(() => setLoadingCategories(false), 300); 
     }
   }
 
@@ -82,7 +82,12 @@ const CategoriesPage = () => {
         </button>
       </div>
       <div className='categories-container page-card overflow-hidden'>
-      {filteredCategories.length === 0 ? (
+      {loadingCategories ? (
+        <div className="flex justify-center items-center py-20">
+          {/* Simple spinner */}
+          <div className="gradient-spinner"></div>
+        </div>
+      ) : filteredCategories.length === 0 ? (
         searchTerm === '' ? (
           <div className="no-results text-center py-12 text-gray-500">
             You haven’t added any categories yet. <br/>
@@ -101,6 +106,9 @@ const CategoriesPage = () => {
         />
       )}
       </div>
+      <p className='text-2xl text-center mt-10' style={{color:"#b0b0b0"}}>
+        Manage, filter, and track your categories all in one place.
+      </p>
       <CategoryModal
         open={addModalOpen}
         userId={user?.id}
