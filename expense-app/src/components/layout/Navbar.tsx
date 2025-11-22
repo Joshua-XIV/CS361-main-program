@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className='navbar'>
       <div className='nav-links'>
         <div className="nav-links-left">
-          <NavLink to="/home" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             Dashboard
           </NavLink>
           <NavLink to="/transactions" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>

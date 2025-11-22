@@ -3,11 +3,13 @@ import { useAuth } from '../hooks/useAuth';
 import { transactionService } from '../services/transaction.service';
 import type { TransactionWithCategory, DateFilter as DateFilterType } from '../services/transaction.service';
 import type { Category } from '../api/categoryApi';
+import { reportApi } from '../api/reportApi';
 import DateFilter from '../components/DateFilter';
 import TransactionsTable from '../components/transaction/TransactionTable';
 import ConfirmModal from '../components/modal/ConfirmModal';
 import TransactionModal from '../components/modal/TransactionModal';
 import TrashCanIcon from "../assets/trashCan.svg?react"
+import FunFact from '../components/FunFactBox';
 
 const TransactionsPage = () => {
   const { user } = useAuth();
@@ -110,9 +112,27 @@ const TransactionsPage = () => {
     setDateFilter(filter);
   }
 
+  const handleExport = async (format: "csv" | "pdf" | "xlsx") => {
+    if (!user?.id) return;
+
+    try {
+      // Use currently displayed transactions or allTransactions
+      await reportApi.generateReport({
+        user_id: user.id,
+        transactions: displayedTransactions, // export filtered list
+        fmt: format,
+        start: undefined, // optionally pass a start date
+        end: undefined,   // optionally pass an end date
+      });
+    } catch (err) {
+      console.error('Failed to export report:', err);
+    }
+  };
+
   return (
     <>
       <h1 className='text-center pb-4'>Transactions</h1>
+      <FunFact/>
 
       <DateFilter
         onApply={handleApplyDateFilter}
@@ -136,8 +156,8 @@ const TransactionsPage = () => {
         </button>
       </div>
 
-      <div className="page-card">
-        <label>Category:
+      <div className="page-card flex justify-between">
+        <label className='flex justify-center items-center gap-4'>Category:
           <select
             id="category-filter"
             value={categoryFilter}
@@ -153,6 +173,31 @@ const TransactionsPage = () => {
             <option value="Other" className='text-black'>Other</option>
           </select>
         </label>
+        <div className="export-buttons flex gap-3">
+          <button
+            onClick={() => handleExport("csv")}
+            className="px-3 py-1 border rounded-xl hover:bg-gray-700"
+          >
+            <span className="inline md:hidden">CSV</span>
+            <span className="hidden md:inline">Export CSV</span>
+          </button>
+
+          <button
+            onClick={() => handleExport("pdf")}
+            className="px-3 py-1 border rounded-xl hover:bg-gray-700"
+          >
+            <span className="inline md:hidden">PDF</span>
+            <span className="hidden md:inline">Export PDF</span>
+          </button>
+
+          <button
+            onClick={() => handleExport("xlsx")}
+            className="px-3 py-1 border rounded-xl hover:bg-gray-700"
+          >
+            <span className="inline md:hidden">XLSX</span>
+            <span className="hidden md:inline">Export XLSX</span>
+          </button>
+        </div>
       </div>
 
       <div className="results-info flex page-card mt-5 h-15 justify-between items-center">

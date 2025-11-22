@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import DateFilter from '../components/DateFilter';
+import FunFact from '../components/FunFactBox';
 
 
 const HomePage = () => {
@@ -45,6 +46,7 @@ const HomePage = () => {
   return (
     <>
       <h1 className='pb-4 text-center'>Dashboard</h1>
+      <FunFact/>
       <DateFilter
         onApply={handleFilterApply}
         onApplyLastDays={handleApplyLastDays}

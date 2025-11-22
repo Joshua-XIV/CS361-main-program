@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { categoryService } from '../services/category.service';
 import CategoryTable from '../components/category/CategoryTable';
 import CategoryModal from '../components/modal/CategoryModal';
+import FunFact from '../components/FunFactBox';
 
 const CategoriesPage = () => {
   const [loadingCategories, setLoadingCategories] = useState(false);
@@ -66,6 +67,7 @@ const CategoriesPage = () => {
   return (
     <>
       <h1 className='text-center pb-4'>Categories</h1>
+      <FunFact/>
       <div className="search-section w-full page-card flex items-center gap-4">
         <input
           type="text"
